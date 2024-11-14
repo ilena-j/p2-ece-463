@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sim_bp.h"
+#include "bp.hpp"
 
 /*  argc holds the number of command line arguments
     argv[] holds the commands themselves
@@ -22,6 +23,10 @@ int main (int argc, char* argv[])
     char outcome;           // Variable holds branch outcome
     unsigned long int addr; // Variable holds the address read from input file
     
+    bool gshare = false; // for predictor init
+    unsigned long int m = 0;
+    unsigned long int n = 0;
+
     if (!(argc == 4 || argc == 5 || argc == 7))
     {
         printf("Error: Wrong number of inputs:%d\n", argc-1);
@@ -39,6 +44,7 @@ int main (int argc, char* argv[])
             exit(EXIT_FAILURE);
         }
         params.M2       = strtoul(argv[2], NULL, 10);
+        m = params.M2;
         trace_file      = argv[3];
         printf("COMMAND\n%s %s %lu %s\n", argv[0], params.bp_name, params.M2, trace_file);
     }
@@ -51,6 +57,9 @@ int main (int argc, char* argv[])
         }
         params.M1       = strtoul(argv[2], NULL, 10);
         params.N        = strtoul(argv[3], NULL, 10);
+        m = params.M1;
+        n = params.N;
+        gshare = true;
         trace_file      = argv[4];
         printf("COMMAND\n%s %s %lu %lu %s\n", argv[0], params.bp_name, params.M1, params.N, trace_file);
 
@@ -84,19 +93,30 @@ int main (int argc, char* argv[])
         printf("Error: Unable to open file %s\n", trace_file);
         exit(EXIT_FAILURE);
     }
+
+    // init branch predictor
+    Predictor bp(m, n, gshare);
     
     char str[2];
     while(fscanf(FP, "%lx %s", &addr, str) != EOF)
     {
-        
+        bool taken = false;
         outcome = str[0];
-        if (outcome == 't')
+        if (outcome == 't') {
+            taken = true;
             printf("%lx %s\n", addr, "t");           // Print and test if file is read correctly
-        else if (outcome == 'n')
+        }
+        else if (outcome == 'n') {
+            taken = false;
             printf("%lx %s\n", addr, "n");          // Print and test if file is read correctly
+        }
         /*************************************
             Add branch predictor code here
         **************************************/
+       bp.predict(addr, taken);
     }
+
+    bp.print_stuff();
+
     return 0;
 }
