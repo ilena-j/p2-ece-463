@@ -9,6 +9,7 @@ using namespace std;
 class Predictor;
 
 #define PRINT_DEBUG false
+#define PRINT_FOR_GRAPHS false
 
 class Predictor {
 public:
@@ -32,7 +33,7 @@ public:
         predictions = 0;
         mispredictions = 0;
 
-        cout << "m: " << m << " n: " << n << " gshare: " << gshare << endl;
+        if (PRINT_DEBUG) cout << "m: " << m << " n: " << n << " gshare: " << gshare << endl;
 
         table_size = 1 << m;
         if (PRINT_DEBUG) cout << "Table size: " << table_size << endl;

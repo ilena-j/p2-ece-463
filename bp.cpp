@@ -75,10 +75,17 @@ void Predictor::update_bhr(bool taken) {
 }
 
 void Predictor::print_stuff(void) {
+    float miss_rate = 100 * (float)mispredictions / (float)predictions;
+    
+    // if PRINT_FOR_GRAPHS print misprediction rate and nothing else
+    if (PRINT_FOR_GRAPHS) {
+        cout << miss_rate << endl;
+        return;
+    }
+
     cout << "OUTPUT\n";
     cout << " number of predictions:    " << predictions << "\n";
     cout << " number of mispredictions: " << mispredictions << "\n";
-    float miss_rate = 100 * (float)mispredictions / (float)predictions;
     printf(" misprediction rate:       %.2lf%\n", miss_rate);
     
     if (!gshare) cout << "FINAL BIMODAL CONTENTS\n";
