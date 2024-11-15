@@ -9,7 +9,7 @@ using namespace std;
 class Predictor;
 
 #define PRINT_DEBUG false
-#define PRINT_FOR_GRAPHS false
+#define PRINT_FOR_GRAPHS true
 
 class Predictor {
 public:

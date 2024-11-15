@@ -9,7 +9,7 @@ TRACE_INDEX = 3
 
 args = ["./sim", "bimodal", "0", "filename"]
 
-args[TRACE_INDEX] = "traces/perl_trace.txt"
+args[TRACE_INDEX] = "traces/gcc_trace.txt"
 
 ms = []
 rates = []
@@ -19,6 +19,7 @@ for i in range (0, 14):
     output = subprocess.run(args, stdout=subprocess.PIPE)
     ms.append(m)
     rates.append(float(output.stdout))
+    print("M = ", m, " MR = ", float(output.stdout))
 
 plt.plot(ms, rates, '.-', color='orchid')
 plt.xlabel('M')

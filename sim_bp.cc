@@ -59,7 +59,8 @@ int main (int argc, char* argv[])
         params.N        = strtoul(argv[3], NULL, 10);
         m = params.M1;
         n = params.N;
-        gshare = true;
+        if (n == 0) gshare = false;
+        else gshare = true;
         trace_file      = argv[4];
         if (!PRINT_FOR_GRAPHS) printf("COMMAND\n%s %s %lu %lu %s\n", argv[0], params.bp_name, params.M1, params.N, trace_file);
 
