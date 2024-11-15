@@ -104,11 +104,11 @@ int main (int argc, char* argv[])
         outcome = str[0];
         if (outcome == 't') {
             taken = true;
-            printf("%lx %s\n", addr, "t");           // Print and test if file is read correctly
+            if (PRINT_DEBUG) printf("%lx %s\n", addr, "t");           // Print and test if file is read correctly
         }
         else if (outcome == 'n') {
             taken = false;
-            printf("%lx %s\n", addr, "n");          // Print and test if file is read correctly
+            if (PRINT_DEBUG) printf("%lx %s\n", addr, "n");          // Print and test if file is read correctly
         }
         /*************************************
             Add branch predictor code here

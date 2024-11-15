@@ -38,14 +38,18 @@ void Predictor::update(unsigned long int index, bool taken) {
 
 unsigned long int Predictor::get_index(unsigned long int pc) {
     // extract PC[m+1:2]
+
+    //cout << hex << pc << "\n";
     unsigned long int index = pc >> 2;
-    unsigned long int mask = (2 << m) - 1; // build mask of M * 1s
+    //cout << index << "\n";
+    unsigned long int mask = (1 << m) - 1; // build mask of M * 1s
+    //cout << mask << "\n";
     index = index & mask;
     
     // for bimodal
     if (!gshare) {
         if (index > table_size) {
-            cout << "PC too large: " << pc << endl;
+            cout << "PC too large: " << hex << index << endl;
             exit(EXIT_FAILURE);
         }
         else return index;
@@ -71,9 +75,17 @@ void Predictor::update_bhr(bool taken) {
 }
 
 void Predictor::print_stuff(void) {
-    cout << "Predictions: " << predictions << "\n";
-    cout << "Mispredictions: " << mispredictions << "\n";
-    float miss_rate = (float)mispredictions / (float)predictions;
-    cout << "Misprediction rate: " << miss_rate << endl;
+    cout << "OUTPUT\n";
+    cout << " number of predictions:    " << predictions << "\n";
+    cout << " number of mispredictions: " << mispredictions << "\n";
+    float miss_rate = 100 * (float)mispredictions / (float)predictions;
+    printf(" misprediction rate:       %.2lf%\n", miss_rate);
+    
+    if (!gshare) cout << "FINAL BIMODAL CONTENTS\n";
+    else cout << "FINAL GSHARE CONTENTS\n";
+    for (unsigned long int i = 0; i < table_size; i++) {
+        printf("%ld\t%d\n", i, bhtable[i]);
+    }
+
     return;
 }

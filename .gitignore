@@ -33,4 +33,6 @@
 
 # my stuff
 traces/*
-test.fake
+val/*
+proj2-traces.zip
+proj2-validation.zip

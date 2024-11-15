@@ -8,16 +8,16 @@ using namespace std;
 
 class Predictor;
 
-#define PRINT_DEBUG false // verbose || current_index == 0x25
+#define PRINT_DEBUG false
 
-class Predictor{
+class Predictor {
 public:
 
     bool gshare;
     unsigned long int m; // number of index bits
     unsigned long int n;
     unsigned long int bhr;
-    vector<uint8_t> bhtable;
+    vector<int> bhtable;
     size_t table_size;
 
     unsigned long int predictions; // statistics
@@ -32,11 +32,18 @@ public:
         predictions = 0;
         mispredictions = 0;
 
-        table_size = 1 >> m;
+        cout << "m: " << m << " n: " << n << " gshare: " << gshare << endl;
+
+        table_size = 1 << m;
         if (PRINT_DEBUG) cout << "Table size: " << table_size << endl;
-        bhtable.resize(1 >> m);
-        fill(bhtable.begin(), bhtable.end(), 1); // init counters to 0
-        if (PRINT_DEBUG) cout << "Last counter value is: " << bhtable[table_size - 1] << endl;
+        //bhtable.resize(table_size);
+        //fill(bhtable.begin(), bhtable.end(), 2); // init counters to 2
+
+        for (size_t i = 0; i < table_size; i++) {
+            bhtable.push_back(2);
+        }
+
+        if (PRINT_DEBUG) cout << "Last counter value is: " << bhtable[0] << endl;
     }
 
     void predict(unsigned long int pc, bool taken);
